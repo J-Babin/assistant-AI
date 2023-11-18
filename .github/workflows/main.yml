@@ -1,0 +1,25 @@
+name: Auto Create PR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Check for keyword in commit message
+      run: |
+        if git log --format=%B -n 1 ${{ github.sha }} | grep -i 'PR'; then
+          echo "Creating a pull request..."
+          hub pull-request -m "$(git log --format=%B -n 1 ${{ github.sha }})"
+        else
+          echo "No keyword found. Not creating a pull request."
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
