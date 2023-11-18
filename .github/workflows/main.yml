@@ -15,7 +15,7 @@ jobs:
 
     - name: Check for keyword in commit message
       run: |
-        if git log --format=%B -n 1 ${{ github.sha }} | grep -i 'PR'; then
+        if git log --format=%B -n 1 ${{ github.sha }} | grep -i 'pr'; then
           echo "Creating a pull request..."
           hub pull-request -m "$(git log --format=%B -n 1 ${{ github.sha }})"
         else
